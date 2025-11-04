@@ -50,10 +50,11 @@ const (
 	SSH
 	TCP
 	MCP
+	FTP
 )
 
 func (protocol Protocol) String() string {
-	return [...]string{"HTTP", "SSH", "TCP", "MCP"}[protocol]
+	return [...]string{"HTTP", "SSH", "TCP", "MCP", "FTP"}[protocol]
 }
 
 const (
@@ -81,6 +82,7 @@ type tracer struct {
 	eventsTCPTotal  prometheus.Counter
 	eventsHTTPTotal prometheus.Counter
 	eventsMCPTotal  prometheus.Counter
+	eventsFTPTotal  prometheus.Counter
 
 	strategyMutex sync.RWMutex
 }
@@ -121,6 +123,11 @@ func GetInstance(defaultStrategy Strategy) *tracer {
 					Namespace: "beelzebub",
 					Name:      "mcp_events_total",
 					Help:      "The total number of MCP events",
+				}),
+				eventsFTPTotal: promauto.NewCounter(prometheus.CounterOpts{
+					Namespace: "beelzebub",
+					Name:      "ftp_events_total",
+					Help:      "The total number of FTP events",
 				}),
 			}
 
@@ -168,6 +175,8 @@ func (tracer *tracer) updatePrometheusCounters(protocol string) {
 		tracer.eventsTCPTotal.Inc()
 	case MCP.String():
 		tracer.eventsMCPTotal.Inc()
+	case FTP.String():
+		tracer.eventsFTPTotal.Inc()
 	}
 	tracer.eventsTotal.Inc()
 }

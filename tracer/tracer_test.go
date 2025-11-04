@@ -1,9 +1,10 @@
 package tracer
 
 import (
-	"github.com/prometheus/client_golang/prometheus"
 	"sync"
 	"testing"
+
+	"github.com/prometheus/client_golang/prometheus"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -107,6 +108,7 @@ func TestUpdatePrometheusCounters(t *testing.T) {
 		eventsTCPTotal:  mockCounter{},
 		eventsHTTPTotal: mockCounter{},
 		eventsMCPTotal:  mockCounter{},
+		eventsFTPTotal:  mockCounter{},
 	}
 
 	tracer.updatePrometheusCounters(SSH.String())
@@ -120,6 +122,9 @@ func TestUpdatePrometheusCounters(t *testing.T) {
 
 	tracer.updatePrometheusCounters(MCP.String())
 	assert.Equal(t, 8, counter)
+
+	tracer.updatePrometheusCounters(FTP.String())
+	assert.Equal(t, 10, counter)
 }
 
 func TestGetStrategy(t *testing.T) {
