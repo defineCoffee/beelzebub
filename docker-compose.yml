@@ -3,7 +3,7 @@ version: "3.9"
 services:
   beelzebub:
     build: .
-    container_name: beelzebub
+    container_name: beelzebub-experimental
     restart: always
     ports:
       - "22:22"
@@ -12,6 +12,7 @@ services:
       - "8081:8081"
       - "80:80"
       - "3306:3306"
+      - "21:21"
       - "2112:2112" #Prometheus Open Metrics
     environment:
       RABBITMQ_URI: ${RABBITMQ_URI}
